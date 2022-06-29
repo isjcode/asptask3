@@ -25,9 +25,16 @@ namespace P225Allup.Controllers
             return View();
         }
 
-        public void RemoveItem(int ProductId)
+        public IActionResult RemoveItem(int? id)
         {
-            Console.WriteLine(ProductId);
+            string cookie = HttpContext.Request.Cookies["basket"];
+            List<BasketVM> basketVMs = JsonConvert.DeserializeObject<List<BasketVM>>(cookie);
+            basketVMs.FindAll(x => x.ProductId != id);
+
+            string items = JsonConvert.SerializeObject(basketVMs.FindAll(x => x.ProductId != id));
+            HttpContext.Response.Cookies.Append("basket", items);
+
+            return RedirectToAction("index", "home");
         }
 
         public async Task<IActionResult> AddToBasket(int? id)
@@ -85,6 +92,8 @@ namespace P225Allup.Controllers
 
                 basketVMs.Add(basketVM);
             }
+
+
 
             string item = JsonConvert.SerializeObject(basketVMs);
 

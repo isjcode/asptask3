@@ -213,7 +213,7 @@
                                                     <div class="cart-item-content media-body">
                                                         <h5 class="product-name"><a href="single-product.html">@basketVM.Title</a></h5>
                                                         <span class="product-price">€@basketVM.Price.ToString("F2")</span>
-                                                        <a href="#" class="product-close"><i class="fal fa-times"></i></a>
+                                                        <a asp-controller="basket" asp-action="removeitem" asp-route-id="@basketVM.ProductId" class="product-close"><i class="fal fa-times"></i></a>
                                                     </div>
                                                 </div>
                                             </li>
@@ -227,7 +227,13 @@
                                             </div>
                                             <div class="shipping price_inline">
                                                 <span class="label">Shipping</span>
+                                            @if (basketVMs.Count == 0) {
+                                                <span class="value">€0</span>
+                                            }
+                                            else
+                                            {
                                                 <span class="value">€7.00</span>
+                                            }
                                             </div>
                                             <div class="tax price_inline">
                                                 <span class="label">Taxes</span>
@@ -236,7 +242,13 @@
                                         </div>
                                         <div class="cart-total price_inline">
                                             <span class="label">Total</span>
-                                            <span class="value">€@(basketVMs.Sum(e => e.Price * e.Count) + 7)</span>
+                                            @if (basketVMs.Count == 0) {
+                                                <span class="value">€0</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="value">€@(basketVMs.Sum(e => e.Price * e.Count) + 7)</span>
+                                            }
                                         </div>
                                     </div> <!-- price content -->
                                     <div class="checkout text-center">
